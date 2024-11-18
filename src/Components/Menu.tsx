@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const Menu: React.FC = () => {
     const navigate = useNavigate();
-    const location = useLocation(); // Get the current location
+    const location = useLocation();
 
     const clickHandler = (path: string) => {
         navigate(`/${path}`);
@@ -60,7 +60,7 @@ const Menu: React.FC = () => {
                     Send Request Money
                 </li>
                 <li
-                    className={`text-center text-lg font-medium cursor-pointer mt-4 ${isActive("sendRequestMoney")
+                    className={`text-center text-lg font-medium cursor-pointer mt-4 ${isActive("logout")
                         ? "text-blue-950 font-bold"
                         : "text-white hover:text-cyan-300"
                         }`}
