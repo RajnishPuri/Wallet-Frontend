@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Menu: React.FC = () => {
     const navigate = useNavigate();
@@ -6,6 +7,26 @@ const Menu: React.FC = () => {
 
     const clickHandler = (path: string) => {
         navigate(`/${path}`);
+    };
+
+    const handleLogout = async () => {
+        try {
+            // Call backend logout endpoint
+            await axios.post("http://localhost:3000/api/v1/auth/logout", null, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`, // Pass the token in the header
+                },
+            });
+
+            // Clear token from localStorage
+            localStorage.removeItem("token");
+
+            // Redirect to login page
+            navigate("/login");
+        } catch (error) {
+            console.error("Error during logout:", error);
+            alert("An error occurred while logging out. Please try again.");
+        }
     };
 
     // Define a function to check if the current path matches
@@ -64,7 +85,7 @@ const Menu: React.FC = () => {
                         ? "text-blue-950 font-bold"
                         : "text-white hover:text-cyan-300"
                         }`}
-                    onClick={() => clickHandler("logout")}
+                    onClick={handleLogout}
                 >
                     Logout
                 </li>
