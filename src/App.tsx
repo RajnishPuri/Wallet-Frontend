@@ -14,7 +14,8 @@ import VerifyUser from "./Pages/VerifyUser";
 import Logout from "./Pages/Logout";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Logo from "/Wezire-Logo.png";
-import { Navigate } from "react-router-dom";
+
+
 
 function App() {
   const navigate = useNavigate();
@@ -48,14 +49,14 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-custom-gradient p-3 flex flex-col items-center gap-5 relative">
+    <div className="w-screen h-screen bg-custom-gradient p-3 flex flex-col items-center gap-5 relative overflow-hidden">
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-user" element={<VerifyUser />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
 
       {/* Render the welcome screen if on the root path */}
@@ -116,16 +117,19 @@ function App() {
               ></div>
 
               {/* Content Layer */}
-              <div className="relative z-10">
-                <Routes>
-                  <Route path="/home" element={<ProtectedRoute component={Home} />} />
-                  <Route path="/sendMoney" element={<ProtectedRoute component={SendMoney} />} />
-                  <Route path="/addMoney" element={<ProtectedRoute component={AddMoney} />} />
-                  <Route path="/requestMoney" element={<ProtectedRoute component={RequestMoney} />} />
-                  <Route path="/showTransactions" element={<ProtectedRoute component={ShowTransactions} />} />
-                  <Route path="/sendRequestMoney" element={<ProtectedRoute component={SendRequestMoney} />} />
-                </Routes>
+              <div className="relative z-10 h-full w-full">
+                <div className="h-full w-full overflow-y-auto">
+                  <Routes>
+                    <Route path="/home" element={<ProtectedRoute component={Home} />} />
+                    <Route path="/sendMoney" element={<ProtectedRoute component={SendMoney} />} />
+                    <Route path="/addMoney" element={<ProtectedRoute component={AddMoney} />} />
+                    <Route path="/requestMoney" element={<ProtectedRoute component={RequestMoney} />} />
+                    <Route path="/showTransactions" element={<ProtectedRoute component={ShowTransactions} />} />
+                    <Route path="/sendRequestMoney" element={<ProtectedRoute component={SendRequestMoney} />} />
+                  </Routes>
+                </div>
               </div>
+
             </div>
 
           </div>

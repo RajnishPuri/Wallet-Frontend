@@ -1,9 +1,112 @@
-const RequestMoney = () => {
-    return (
-        <div>
-            RequestMoney
-        </div>
-    )
-}
+import { useState } from "react";
+import axios from "axios";
+import Input from "./input";
+import { Currency, User } from "lucide-react";
 
-export default RequestMoney
+const RequestMoney = () => {
+    const [senderAccountNumber, setSenderAccountNumber] = useState("");
+    const [amount, setAmount] = useState<number | string>("");
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const requestMoneyHandler = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setMessage("");
+        setError("");
+        setLoading(true);
+
+        const token = localStorage.getItem("token"); // Fetch the token from localStorage
+
+        if (!token) {
+            setError("You must be logged in to perform this action.");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response: any = await axios.post(
+                "http://localhost:3000/api/v1/sendRequestMoney",
+                { senderAccountNumber, amount },
+                {
+                    headers: {
+                        Authorization: `${token}`, // Include token for authentication
+                    },
+                }
+            );
+
+            setMessage(response.data.message || "Request sent successfully!");
+            setSenderAccountNumber("");
+            setAmount("");
+        } catch (err: any) {
+            setError(
+                err.response?.data?.message || "An error occurred while processing your request."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="relative flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg mx-auto mt-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
+                Request Money
+            </h2>
+            <p className="text-white text-sm mb-6">
+                Enter the account number of the sender and the amount you want to request. Ensure you
+                provide correct details before submitting your request.
+            </p>
+            <form onSubmit={requestMoneyHandler}>
+                {/* Sender Account Number Input */}
+                <div className="mb-4">
+                    <label className="block text-white mb-2">Sender's Account Number</label>
+                    <Input
+                        icon={User}
+                        type="text"
+                        placeholder="Sender's account number"
+                        value={senderAccountNumber}
+                        onChange={(e) => setSenderAccountNumber(e.target.value)}
+                    />
+                </div>
+
+                {/* Amount Input */}
+                <div className="mb-4">
+                    <label className="block text-white mb-2">Amount</label>
+                    <Input
+                        icon={Currency}
+                        type="number"
+                        placeholder="Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                    <div className="text-red-500 text-sm mt-2 text-center">{error}</div>
+                )}
+
+                {/* Success Message */}
+                {message && (
+                    <div className="text-green-500 text-sm mt-2 text-center">{message}</div>
+                )}
+
+                {/* Submit Button */}
+                <div className="w-full flex justify-center mt-4 sm:mt-6">
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`py-2 px-4 sm:py-2 sm:px-6 ${loading
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : "bg-green-500 hover:bg-green-600"
+                            } text-white font-semibold rounded-lg transition duration-200`}
+                    >
+                        {loading ? "Processing..." : "Request Money"}
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default RequestMoney;

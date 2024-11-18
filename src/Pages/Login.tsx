@@ -44,7 +44,8 @@ const Login: React.FC = () => {
 
             if (data.success && data.token) {
                 // Save the token in localStorage
-                localStorage.setItem('token', `Bearer ${data.token}`);
+                console.log(data.token);
+                localStorage.setItem('token', `${data.token}`);
                 alert("Login successful!");
                 navigate('/home'); // Navigate to the home page after successful login
             } else {
@@ -112,3 +113,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
