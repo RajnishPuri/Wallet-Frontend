@@ -5,7 +5,7 @@ import { CurrencyIcon, User } from "lucide-react";
 
 const SendMoney = () => {
     const [toUser, setToUser] = useState("");
-    const [amount, setAmount] = useState<number>();
+    const [amount, setAmount] = useState<number>(0); // Initialize as 0
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -16,10 +16,16 @@ const SendMoney = () => {
         setError("");
         setLoading(true);
 
-        const token = localStorage.getItem("token"); // Fetch the token from localStorage
+        const token = localStorage.getItem("token");
 
         if (!token) {
             setError("You must be logged in to perform this action.");
+            setLoading(false);
+            return;
+        }
+
+        if (isNaN(amount) || amount <= 0) { // Validate numeric and positive amount
+            setError("Please enter a valid amount greater than 0.");
             setLoading(false);
             return;
         }
@@ -76,10 +82,9 @@ const SendMoney = () => {
                         icon={CurrencyIcon}
                         type="number"
                         placeholder="Amount"
-                        value={amount}
+                        value={amount || ""} // Display empty string if amount is 0
                         onChange={(e) => setAmount(Number(e.target.value))} // Convert string to number
                     />
-
                 </div>
 
                 {/* Error Message */}
@@ -108,7 +113,6 @@ const SendMoney = () => {
             </form>
         </div>
     );
-
 };
 
 export default SendMoney;

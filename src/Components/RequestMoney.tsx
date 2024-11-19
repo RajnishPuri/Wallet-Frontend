@@ -5,7 +5,7 @@ import { Currency, User } from "lucide-react";
 
 const RequestMoney = () => {
     const [senderAccountNumber, setSenderAccountNumber] = useState("");
-    const [amount, setAmount] = useState<number | string>("");
+    const [amount, setAmount] = useState<number>(0);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -16,7 +16,13 @@ const RequestMoney = () => {
         setError("");
         setLoading(true);
 
-        const token = localStorage.getItem("token"); // Fetch the token from localStorage
+        if (amount <= 0) {
+            setError("Please enter a valid amount greater than 0.");
+            setLoading(false);
+            return;
+        }
+
+        const token = localStorage.getItem("token");
 
         if (!token) {
             setError("You must be logged in to perform this action.");
@@ -30,14 +36,14 @@ const RequestMoney = () => {
                 { senderAccountNumber, amount },
                 {
                     headers: {
-                        Authorization: `${token}`, // Include token for authentication
+                        Authorization: `${token}`,
                     },
                 }
             );
 
             setMessage(response.data.message || "Request sent successfully!");
             setSenderAccountNumber("");
-            setAmount("");
+            setAmount(0);
         } catch (err: any) {
             setError(
                 err.response?.data?.message || "An error occurred while processing your request."
@@ -77,7 +83,7 @@ const RequestMoney = () => {
                         type="number"
                         placeholder="Amount"
                         value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(e) => setAmount(Number(e.target.value) || 0)}
                     />
                 </div>
 
@@ -107,7 +113,6 @@ const RequestMoney = () => {
             </form>
         </div>
     );
-
 };
 
 export default RequestMoney;
