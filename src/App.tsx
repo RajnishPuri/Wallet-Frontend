@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Menu from "./Components/Menu";
@@ -10,18 +10,15 @@ import SendRequestMoney from "./Components/SendRequestMoney";
 import Home from "./Components/Home";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import VerifyUser from "./Pages/VerifyUser";
 import Logout from "./Pages/Logout";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Logo from "/Wezire-Logo.png";
 
-
-
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Redirect to /home if token exists and user visits "/"
   useEffect(() => {
     if (location.pathname === "/") {
       const token = localStorage.getItem("token");
@@ -31,7 +28,6 @@ function App() {
     }
   }, [location.pathname, navigate]);
 
-  // Define main content routes for conditional rendering
   const mainContentRoutes = [
     "/home",
     "/sendMoney",
@@ -43,25 +39,21 @@ function App() {
 
   const isMainContentRoute = mainContentRoutes.includes(location.pathname);
 
-  // Navigation handler for register/login buttons
   const clickHandler = (route: string) => {
     navigate(`/${route}`);
   };
 
   return (
-    <div className="w-screen h-screen bg-custom-gradient p-3 flex flex-col items-center gap-5 relative overflow-hidden">
+    <div className="w-screen h-screen bg-custom-gradient p-3 flex flex-col items-center gap-5 relative over">
       <Routes>
-        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/verify-user" element={<VerifyUser />} />
         <Route path="/logout" element={<Logout />} />
-
       </Routes>
 
-      {/* Render the welcome screen if on the root path */}
       {location.pathname === "/" && (
-        <div className="absolute inset-0 bg-no-repeat bg-center opacity-100 pointer-events-none"
+        <div
+          className="absolute inset-0 bg-no-repeat bg-center opacity-100 pointer-events-none"
           style={{
             backgroundImage: `url(${Logo})`,
             backgroundSize: "500px 500px",
@@ -90,33 +82,27 @@ function App() {
         </div>
       )}
 
-      {/* Render main content for authenticated routes */}
       {isMainContentRoute && (
-        <div className="z-10 w-full h-full flex flex-col items-center gap-3">
-          <div className="w-5/6 h-fit p-3 bg-blue-950 text-white opacity-85 rounded-lg">
+        <div className="z-10 w-full h-full flex flex-col gap-1 items-center overflow-hidden">
+          <div className="w-5/6 h-fit p-1 bg-blue-950 text-white opacity-85 rounded-lg">
             <Navbar />
           </div>
-          <div className="w-5/6 flex-1 flex justify-between gap-5">
-            {/* Sidebar Menu */}
-            <div className="w-1/4 h-fit p-6 rounded-lg bg-white/10 backdrop-blur-md shadow-lg border border-white/20">
-              <Menu />
+          <div className="w-5/6 flex-1 flex justify-between gap-5 h-full">
+            <div className="w-1/5 h-fit p-6 rounded-lg bg-white/10 backdrop-blur-md shadow-lg border border-white/20 hidden lg:block">
+              <Menu setIsMenuOpen={setIsMenuOpen} />
             </div>
-
-            {/* Main content */}
-            <div className="w-full h-full p-6 rounded-lg bg-white/10 backdrop-blur-md shadow-lg border border-white/20 relative">
-              {/* Background Layer */}
+            <div className="w-full lg:w-4/5 rounded-lg bg-white/10 backdrop-blur-none shadow-lg border border-white/20 relative overflow-y-auto">
               <div
                 className="absolute inset-0 bg-no-repeat bg-center pointer-events-none"
                 style={{
                   backgroundImage: `url(${Logo})`,
                   backgroundSize: "500px 500px",
                   backgroundPosition: "center center",
-                  opacity: 0.4, // Opacity applied only to the background
+                  opacity: 0.4,
                   zIndex: 0,
+                  backdropFilter: "blur(10px)",
                 }}
               ></div>
-
-              {/* Content Layer */}
               <div className="relative z-10 h-full w-full">
                 <div className="h-full w-full overflow-y-auto">
                   <Routes>
@@ -129,10 +115,18 @@ function App() {
                   </Routes>
                 </div>
               </div>
-
             </div>
-
           </div>
+          <div className="lg:hidden absolute top-5 left-5 z-20">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white text-3xl">
+              ☰
+            </button>
+          </div>
+          {isMenuOpen && (
+            <div className="lg:hidden absolute top-0 left-0 w-full h-full bg-white/10 backdrop-blur-md p-6 z-10">
+              <Menu setIsMenuOpen={setIsMenuOpen} /> {/* Use setIsMenuOpen */}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -140,3 +134,4 @@ function App() {
 }
 
 export default App;
+

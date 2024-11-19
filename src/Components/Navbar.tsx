@@ -22,31 +22,31 @@ export default function Navbar() {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                // Retrieve the token from localStorage or sessionStorage
                 const token = localStorage.getItem("token");
-                console.log(token);
-
                 if (!token) {
                     setError("Unauthorized: No token provided.");
                     setLoading(false);
                     return;
                 }
 
-                // Send request with Authorization header
                 const response = await axios.get<ApiResponse<UserDetails>>(
                     "http://localhost:3000/api/v1/getUserDetails",
                     {
                         headers: {
-                            Authorization: `${token}`, // Add the token here
+                            Authorization: `${token}`, // Added Bearer prefix for clarity
                         },
-                        withCredentials: true, // If cookies are also required
+                        withCredentials: true,
                     }
                 );
 
-                console.log(response);
-                setUserDetails(response.data.data);
+                if (response.data.success) {
+                    setUserDetails(response.data.data);
+                } else {
+                    setError(response.data.message); // Use the message from the API
+                }
                 setLoading(false);
             } catch (err: any) {
+                console.error("Error fetching user details:", err); // Log the full error
                 setError("Failed to fetch user details.");
                 setLoading(false);
             }
@@ -56,23 +56,35 @@ export default function Navbar() {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="text-center">Loading...</div>;
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div className="text-center text-red-500">Error: {error}</div>;
     }
 
     return (
-        <div className="flex justify-around p-2 shadow-md">
-            <ul className="space-y-2">
-                <li>Account Number: {userDetails?.AccountNumber}</li>
-                <li>Name: {userDetails?.Name}</li>
-            </ul>
-            <ul className="space-y-2">
-                <li>Email: {userDetails?.Email}</li>
-                <li>Balance: ₹{userDetails?.Balance.toLocaleString()}</li>
-            </ul>
+        <div className="flex flex-col space-y-1 md:flex-row md:space-x-12 p-1 shadow-md jus text-white rounded-md w-full">
+            <div className="flex flex-col space-y-1">
+                <div>
+                    <span className="font-semibold">Account Number: </span>
+                    {userDetails?.AccountNumber}
+                </div>
+                <div>
+                    <span className="font-semibold">Name: </span>
+                    {userDetails?.Name}
+                </div>
+            </div>
+            <div className="flex flex-col space-y-1">
+                <div>
+                    <span className="font-semibold">Email: </span>
+                    {userDetails?.Email}
+                </div>
+                <div>
+                    <span className="font-semibold">Balance: </span>
+                    ₹{userDetails?.Balance.toLocaleString()}
+                </div>
+            </div>
         </div>
     );
 }

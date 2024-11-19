@@ -64,33 +64,43 @@ const Home = () => {
     }
 
     return (
-        <div className="w-full h-full flex flex-col justify-between text-white">
-            <div className=" flex justify-center flex-col items-center">
-                <h1 className="text-3xl font-bold mb-4">
+        <div className=" h-[36rem]">
+            {/* Content Container */}
+            <div className="flex flex-col items-center text-center space-y-6 overflow-y-auto mb-16">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
                     Welcome to Wezire Bank,
                 </h1>
-                <h1 className="text-3xl font-bold mb-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-white">
                     {userDetails?.Name}!
                 </h1>
-                <p className="text-lg text-center max-w-2xl mb-6">
+                <p className="text-white sm:text-lg lg:text-xl max-w-2xl mb-6">
                     At Wezire Bank, we are dedicated to providing you with secure, reliable,
                     and efficient banking services. Whether you're managing your savings,
                     tracking your transactions, or planning for the future, Wezire Bank is here
                     to support you every step of the way.
+                    At Wezire Bank, we are dedicated to providing you with secure, reliable,
+                    and efficient banking services. Whether you're managing your savings,
+                    tracking your transactions, or planning for the future, Wezire Bank is here
+                    to support you every step of the way.                    At Wezire Bank, we are dedicated to providing you with secure, reliable,
+                    and efficient banking services. Whether you're managing your savings,
+                    tracking your transactions, or planning for the future, Wezire Bank is here
+                    to support you every step of the way.
                 </p>
-                <p className="text-lg text-center max-w-2xl mb-6">
+                <p className="text-white sm:text-lg lg:text-xl max-w-2xl mb-6">
                     Explore our advanced online banking platform to access your account details,
                     manage your funds, and enjoy seamless banking from the comfort of your home.
                     We value your trust and strive to exceed your expectations every day.
                 </p>
             </div>
-            <div>
-                <footer className="w-full mt-auto py-4 text-white text-center">
-                    © {new Date().getFullYear()} Wezire Bank. All Rights Reserved.
-                </footer>
-            </div>
+
+            {/* Footer - Will be pushed to the bottom */}
+            <footer className="w-full py-4 text-white text-center mt-auto">
+                © {new Date().getFullYear()} Wezire Bank. All Rights Reserved.
+            </footer>
         </div>
     );
+
+
 };
 
 export default Home;

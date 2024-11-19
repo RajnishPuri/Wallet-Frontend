@@ -48,17 +48,17 @@ const RequestMoney = () => {
     };
 
     return (
-        <div className="relative flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg mx-auto mt-8">
+        <div className="relative flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg mx-auto mt-8 overflow-y-auto max-h-[80vh]">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
                 Request Money
             </h2>
-            <p className="text-white text-sm mb-6">
+            <p className="text-white text-sm mb-6 text-center">
                 Enter the account number of the sender and the amount you want to request. Ensure you
                 provide correct details before submitting your request.
             </p>
-            <form onSubmit={requestMoneyHandler}>
+            <form onSubmit={requestMoneyHandler} className="space-y-4">
                 {/* Sender Account Number Input */}
-                <div className="mb-4">
+                <div>
                     <label className="block text-white mb-2">Sender's Account Number</label>
                     <Input
                         icon={User}
@@ -70,7 +70,7 @@ const RequestMoney = () => {
                 </div>
 
                 {/* Amount Input */}
-                <div className="mb-4">
+                <div>
                     <label className="block text-white mb-2">Amount</label>
                     <Input
                         icon={Currency}
@@ -83,16 +83,16 @@ const RequestMoney = () => {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="text-red-500 text-sm mt-2 text-center">{error}</div>
+                    <div className="text-red-500 text-sm text-center">{error}</div>
                 )}
 
                 {/* Success Message */}
                 {message && (
-                    <div className="text-green-500 text-sm mt-2 text-center">{message}</div>
+                    <div className="text-green-500 text-sm text-center">{message}</div>
                 )}
 
                 {/* Submit Button */}
-                <div className="w-full flex justify-center mt-4 sm:mt-6">
+                <div className="w-full flex justify-center">
                     <button
                         type="submit"
                         disabled={loading}
@@ -107,6 +107,7 @@ const RequestMoney = () => {
             </form>
         </div>
     );
+
 };
 
 export default RequestMoney;

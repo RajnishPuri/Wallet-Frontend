@@ -59,7 +59,6 @@ const Login: React.FC = () => {
         }
     };
 
-
     return (
         <div className="w-screen h-screen flex justify-center items-center p-4 bg-cover bg-center"
             style={{
@@ -69,7 +68,8 @@ const Login: React.FC = () => {
                 zIndex: 0,
                 backgroundRepeat: "space"
             }}>
-            <form className="relative bg-black/70 backdrop-blur-md flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg shadow-md"
+            {/* Form container with backdrop-blur removed */}
+            <form className="relative bg-black/70 flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg shadow-md"
                 onSubmit={loginHandler}>
                 <h2 className="text-2xl sm:text-3xl font-bold text-purple-500 mb-6 sm:mb-8 text-center">Login</h2>
 
@@ -113,4 +113,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-

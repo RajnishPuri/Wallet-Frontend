@@ -1,11 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import Input from "./input";
-import { Currency, CurrencyIcon, User } from "lucide-react";
+import { CurrencyIcon, User } from "lucide-react";
 
 const SendMoney = () => {
     const [toUser, setToUser] = useState("");
-    const [amount, setAmount] = useState<number | string>("");
+    const [amount, setAmount] = useState<number>();
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const SendMoney = () => {
 
             setMessage(response.data.message || "Money sent successfully!");
             setToUser("");
-            setAmount("");
+            setAmount(0);
         } catch (err: any) {
             setError(
                 err.response?.data?.message || "An error occurred while processing your request."
@@ -48,17 +48,17 @@ const SendMoney = () => {
     };
 
     return (
-        <div className="relative flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg mx-auto mt-8">
+        <div className="relative flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg mx-auto mt-8 overflow-y-auto max-h-[80vh]">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
                 Send Money
             </h2>
-            <p className="text-white text-sm mb-6">
+            <p className="text-white text-sm mb-6 text-center">
                 Fill in the recipient's email and the amount you want to send. Ensure you have
                 sufficient balance before proceeding.
             </p>
-            <form onSubmit={sendMoneyHandler}>
+            <form onSubmit={sendMoneyHandler} className="space-y-4">
                 {/* Recipient Email Input */}
-                <div className="mb-4">
+                <div>
                     <label className="block text-white mb-2">Recipient's Email</label>
                     <Input
                         icon={User}
@@ -70,29 +70,30 @@ const SendMoney = () => {
                 </div>
 
                 {/* Amount Input */}
-                <div className="mb-4">
+                <div>
                     <label className="block text-white mb-2">Amount</label>
                     <Input
                         icon={CurrencyIcon}
                         type="number"
                         placeholder="Amount"
                         value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(e) => setAmount(Number(e.target.value))} // Convert string to number
                     />
+
                 </div>
 
                 {/* Error Message */}
                 {error && (
-                    <div className="text-red-500 text-sm mt-2 text-center">{error}</div>
+                    <div className="text-red-500 text-sm text-center">{error}</div>
                 )}
 
                 {/* Success Message */}
                 {message && (
-                    <div className="text-green-500 text-sm mt-2 text-center">{message}</div>
+                    <div className="text-green-500 text-sm text-center">{message}</div>
                 )}
 
                 {/* Submit Button */}
-                <div className="w-full flex justify-center mt-4 sm:mt-6">
+                <div className="w-full flex justify-center">
                     <button
                         type="submit"
                         disabled={loading}
@@ -107,6 +108,7 @@ const SendMoney = () => {
             </form>
         </div>
     );
+
 };
 
 export default SendMoney;

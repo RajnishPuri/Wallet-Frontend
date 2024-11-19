@@ -9,7 +9,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component })
     const token = localStorage.getItem("token");
 
     // Log the token for debugging (remove in production)
-    console.log("Token:", token);
+
 
     if (!token) {
         // Redirect to login if no token is found

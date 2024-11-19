@@ -23,7 +23,11 @@ const ShowTransactions = () => {
                 });
 
                 if (response.data.success) {
-                    setTransactions(response.data.alltansactions);
+                    // Sort transactions by time in descending order
+                    const sortedTransactions = response.data.alltansactions.sort(
+                        (a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()
+                    );
+                    setTransactions(sortedTransactions);
                 } else {
                     setError(response.data.message);
                 }
@@ -53,10 +57,12 @@ const ShowTransactions = () => {
     };
 
     return (
-        <div className="relative flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg mx-auto mt-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
-                Transaction History
-            </h2>
+        <div className="relative flex flex-col p-4 w-full max-w-auto rounded-lg mx-auto max-h-[80vh] h-[36rem]">
+            <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
+                    Transaction History
+                </h2>
+            </div>
 
             {/* Error Message */}
             {error && (
@@ -67,40 +73,46 @@ const ShowTransactions = () => {
             {loading ? (
                 <div className="text-white text-sm text-center">Loading...</div>
             ) : (
-                <div>
+                <div className="relative h-[36rem] max-h-[70vh] overflow-y-auto">
                     {transactions.length === 0 ? (
-                        <div className="text-white text-sm text-center">No transactions found.</div>
+                        <div className="text-white text-sm text-center">
+                            No transactions found.
+                        </div>
                     ) : (
-                        <div>
+                        <ul className="space-y-4"> {/* Use an unordered list for proper semantics */}
                             {transactions.map((transaction: any) => (
-                                <div
+                                <li
                                     key={transaction.transactionId}
-                                    className={`flex justify-between items-center mb-4 p-4 rounded-lg ${transaction.transactionType === "credit"
+                                    className={`flex flex-col space-y-2 p-4 rounded-lg ${transaction.transactionType === "credit"
                                         ? "bg-green-100"
                                         : "bg-red-100"
                                         }`}
                                 >
-                                    <div className="flex flex-col">
-                                        <span className="font-semibold">{transaction.from}</span>
-                                        <span className="text-sm text-gray-600">
-                                            {convertToIST(transaction.time)}
-                                        </span>
+                                    <div>
+                                        <span className="font-semibold">From: </span>
+                                        {transaction.from}
                                     </div>
-                                    <div className="flex flex-col items-end">
-                                        <span className="text-sm">{transaction.sentTo}</span>
-                                        <span
-                                            className={`font-semibold ${transaction.transactionType === "credit"
-                                                ? "text-green-600"
-                                                : "text-red-600"
-                                                }`}
+                                    <div>
+                                        <span className="font-semibold">To: </span>
+                                        {transaction.sentTo}
+                                    </div>
+                                    <div>
+                                        <span className="font-semibold">Time: </span>
+                                        {convertToIST(transaction.time)}
+                                    </div>
+                                    <div>
+                                        <span className={`font-semibold ${transaction.transactionType === "credit"
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                            }`}
                                         >
-                                            {transaction.transactionType === "credit"
-                                                ? "+" : "-"}₹{transaction.Amount}
+                                            {transaction.transactionType === "credit" ? "+" : "-"}₹
+                                            {transaction.Amount}
                                         </span>
                                     </div>
-                                </div>
+                                </li>
                             ))}
-                        </div>
+                        </ul>
                     )}
                 </div>
             )}

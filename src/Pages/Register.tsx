@@ -119,7 +119,6 @@ const Register = () => {
             });
     }
 
-
     return (
         <div
             className="w-screen h-screen flex justify-center items-center p-4 bg-cover bg-center"
@@ -127,19 +126,12 @@ const Register = () => {
                 backgroundImage: `url(${Logo})`,
                 backgroundSize: "500px 500px",
                 backgroundPosition: "center center",
-                zIndex: 0,
-                backgroundRepeat: "space"
+                backgroundRepeat: "space",
+                zIndex: 0
             }}
         >
-            <form className="relative bg-black/70 backdrop-blur-md flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg shadow-md">
-                {/* Logo */}
-                <div
-                    className="absolute inset-0 bg-center bg-no-repeat opacity-10 pointer-events-none"
-                    style={{
-                        backgroundImage: 'url(/path-to-your-logo.png)',
-                        backgroundSize: '100px 100px',
-                    }}
-                ></div>
+            <form className="relative bg-black/70 flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg shadow-md">
+
 
                 <h2 className="text-2xl sm:text-3xl font-bold text-purple-500 mb-6 sm:mb-8 text-center">
                     {state.verificationStep ? 'Verify Account' : 'Sign Up'}
