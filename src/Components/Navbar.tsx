@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import axios from "axios";
+import { setUserDetails, setLoading, setError } from "../store/store";
+import { RootState } from "../store/store";
 
-interface ApiResponse<T> {
+type ApiResponse<T> = {
     success: boolean;
     message: string;
     data: T;
-}
+};
 
 interface UserDetails {
     Name: string;
@@ -15,17 +18,17 @@ interface UserDetails {
 }
 
 export default function Navbar() {
-    const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const dispatch = useDispatch();
+    const { userDetails, loading, error } = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
+            dispatch(setLoading(true));
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    setError("Unauthorized: No token provided.");
-                    setLoading(false);
+                    dispatch(setError("Unauthorized: No token provided."));
+                    dispatch(setLoading(false));
                     return;
                 }
 
@@ -33,27 +36,26 @@ export default function Navbar() {
                     "http://localhost:3000/api/v1/getUserDetails",
                     {
                         headers: {
-                            Authorization: `${token}`, // Added Bearer prefix for clarity
+                            Authorization: `${token}`,
                         },
                         withCredentials: true,
                     }
                 );
 
                 if (response.data.success) {
-                    setUserDetails(response.data.data);
+                    dispatch(setUserDetails(response.data.data));
                 } else {
-                    setError(response.data.message); // Use the message from the API
+                    dispatch(setError(response.data.message));
                 }
-                setLoading(false);
-            } catch (err: any) {
-                console.error("Error fetching user details:", err); // Log the full error
-                setError("Failed to fetch user details.");
-                setLoading(false);
+            } catch (err) {
+                dispatch(setError("Failed to fetch user details."));
+            } finally {
+                dispatch(setLoading(false));
             }
         };
 
         fetchUserDetails();
-    }, []);
+    }, [dispatch]);
 
     if (loading) {
         return <div className="text-center">Loading...</div>;
