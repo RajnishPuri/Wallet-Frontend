@@ -4,7 +4,7 @@ import axios from "axios";
 import { setUserDetails, setLoading, setError } from "../store/store";
 import { RootState } from "../store/store";
 
-const server = import.meta.env.VITE_SERVER;
+const server = import.meta.env.VITE_SERVER || "https://wallet-backend-1-sqp6.onrender.com";
 console.log(server);
 
 type ApiResponse<T> = {
