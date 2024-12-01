@@ -1,7 +1,6 @@
 import React from 'react';
 import { Check, X } from "lucide-react";
 
-// Define the type for PasswordCriteria props
 interface PasswordCriteriaProps {
     password: string;
 }
@@ -31,7 +30,6 @@ const PasswordCriteria: React.FC<PasswordCriteriaProps> = ({ password }) => {
     );
 };
 
-// Define the type for PasswordStrengthMeter props
 interface PasswordStrengthMeterProps {
     password: string;
 }

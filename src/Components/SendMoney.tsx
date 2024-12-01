@@ -5,7 +5,7 @@ import { CurrencyIcon, User } from "lucide-react";
 
 const SendMoney = () => {
     const [toUser, setToUser] = useState("");
-    const [amount, setAmount] = useState<number>(0); // Initialize as 0
+    const [amount, setAmount] = useState<number>(0);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ const SendMoney = () => {
             return;
         }
 
-        if (isNaN(amount) || amount <= 0) { // Validate numeric and positive amount
+        if (isNaN(amount) || amount <= 0) {
             setError("Please enter a valid amount greater than 0.");
             setLoading(false);
             return;
@@ -32,11 +32,11 @@ const SendMoney = () => {
 
         try {
             const response: any = await axios.post(
-                "http://localhost:3000/api/v1/sendMoney",
+                "https://wallet-backend-1-sqp6.onrender.com/api/v1/sendMoney",
                 { toUser, amount },
                 {
                     headers: {
-                        Authorization: `${token}`, // Include token for authentication
+                        Authorization: `${token}`,
                     },
                 }
             );
@@ -63,7 +63,6 @@ const SendMoney = () => {
                 sufficient balance before proceeding.
             </p>
             <form onSubmit={sendMoneyHandler} className="space-y-4">
-                {/* Recipient Email Input */}
                 <div>
                     <label className="block text-white mb-2">Recipient's Email</label>
                     <Input
@@ -75,29 +74,25 @@ const SendMoney = () => {
                     />
                 </div>
 
-                {/* Amount Input */}
                 <div>
                     <label className="block text-white mb-2">Amount</label>
                     <Input
                         icon={CurrencyIcon}
                         type="number"
                         placeholder="Amount"
-                        value={amount || ""} // Display empty string if amount is 0
-                        onChange={(e) => setAmount(Number(e.target.value))} // Convert string to number
+                        value={amount || ""}
+                        onChange={(e) => setAmount(Number(e.target.value))}
                     />
                 </div>
 
-                {/* Error Message */}
                 {error && (
                     <div className="text-red-500 text-sm text-center">{error}</div>
                 )}
 
-                {/* Success Message */}
                 {message && (
                     <div className="text-green-500 text-sm text-center">{message}</div>
                 )}
 
-                {/* Submit Button */}
                 <div className="w-full flex justify-center">
                     <button
                         type="submit"

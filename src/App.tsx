@@ -10,7 +10,6 @@ import SendRequestMoney from "./Components/SendRequestMoney";
 import Home from "./Components/Home";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import Logout from "./Pages/Logout";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Logo from "/Wezire-Logo.png";
 
@@ -48,7 +47,6 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/logout" element={<Logout />} />
       </Routes>
 
       {location.pathname === "/" && (
@@ -124,7 +122,7 @@ function App() {
           </div>
           {isMenuOpen && (
             <div className="lg:hidden absolute top-0 left-0 w-full h-full bg-white/10 backdrop-blur-md p-6 z-10">
-              <Menu setIsMenuOpen={setIsMenuOpen} /> {/* Use setIsMenuOpen */}
+              <Menu setIsMenuOpen={setIsMenuOpen} />
             </div>
           )}
         </div>

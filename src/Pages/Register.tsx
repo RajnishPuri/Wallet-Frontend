@@ -65,7 +65,7 @@ const Register = () => {
 
         const user = { firstName: state.firstName, lastName: state.lastName, email: state.email, password: state.password };
 
-        fetch('http://localhost:3000/api/v1/auth/register', {
+        fetch('https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user),
@@ -92,13 +92,13 @@ const Register = () => {
     function verifyHandler(e: React.FormEvent) {
         e.preventDefault();
 
-        const verificationData = { otp: state.verificationCode }; // Wrap in an object
+        const verificationData = { otp: state.verificationCode };
 
-        fetch('http://localhost:3000/api/v1/auth/verify-user', {
+        fetch('https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/verify-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(verificationData), // Ensure it's a JSON string
-            credentials: 'include', // Send cookies along with the request
+            body: JSON.stringify(verificationData),
+            credentials: 'include',
         })
             .then((res) => {
                 if (!res.ok) {

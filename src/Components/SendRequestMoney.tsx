@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const SendRequestMoney = () => {
@@ -10,7 +10,7 @@ const SendRequestMoney = () => {
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const token = localStorage.getItem("token"); // Retrieve token
+                const token = localStorage.getItem("token");
                 if (!token) {
                     setError("You must be logged in to view requests.");
                     setLoading(false);
@@ -18,7 +18,7 @@ const SendRequestMoney = () => {
                 }
 
                 const responsefirst: any = await axios.get(
-                    "http://localhost:3000/api/v1/allRequestMoney",
+                    "https://wallet-backend-1-sqp6.onrender.com/api/v1/allRequestMoney",
                     {
                         headers: {
                             Authorization: `${token}`,
@@ -28,7 +28,6 @@ const SendRequestMoney = () => {
 
                 if (responsefirst.data.success) {
                     const { allRequesttMoney } = responsefirst.data;
-                    // Separate pending and completed requests
                     const pending = allRequesttMoney.filter(
                         (request: any) => !request.Completed
                     );
@@ -59,7 +58,7 @@ const SendRequestMoney = () => {
             }
 
             const response: any = await axios.post(
-                "http://localhost:3000/api/v1/completeRequestMoney",
+                "https://wallet-backend-1-sqp6.onrender.com/api/v1/completeRequestMoney",
                 { id: requestId },
                 {
                     headers: {
@@ -76,7 +75,7 @@ const SendRequestMoney = () => {
                     ...prevCompleted,
                     { ...response.data.request, Completed: true },
                 ]);
-                setError(""); // Clear any previous error
+                setError("");
             } else {
                 setError(response.data.message);
             }

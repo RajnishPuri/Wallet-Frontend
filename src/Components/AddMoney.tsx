@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Input from "./input";
-import { CurrencyIcon, User } from "lucide-react";
+import { CurrencyIcon } from "lucide-react";
 
 const AddMoney = () => {
-    const [amount, setAmount] = useState<number>(0); // Initialize as 0
+    const [amount, setAmount] = useState<number>(0);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -32,11 +31,11 @@ const AddMoney = () => {
 
         try {
             const response: any = await axios.post(
-                "http://localhost:3000/api/v1/addMoney",
+                "https://wallet-backend-1-sqp6.onrender.com/api/v1/addMoney",
                 { amount },
                 {
                     headers: {
-                        Authorization: `${token}`, // Include token for authentication
+                        Authorization: `${token}`,
                     },
                 }
             );
@@ -70,22 +69,19 @@ const AddMoney = () => {
                         icon={CurrencyIcon}
                         type="number"
                         placeholder="Amount"
-                        value={amount || ""} // Display empty string if amount is 0
-                        onChange={(e) => setAmount(Number(e.target.value))} // Convert string to number
+                        value={amount || ""}
+                        onChange={(e) => setAmount(Number(e.target.value))}
                     />
                 </div>
 
-                {/* Error Message */}
                 {error && (
                     <div className="text-red-500 text-sm text-center">{error}</div>
                 )}
 
-                {/* Success Message */}
                 {message && (
                     <div className="text-green-500 text-sm text-center">{message}</div>
                 )}
 
-                {/* Submit Button */}
                 <div className="w-full flex justify-center">
                     <button
                         type="submit"

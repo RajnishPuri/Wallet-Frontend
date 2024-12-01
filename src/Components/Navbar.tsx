@@ -33,7 +33,7 @@ export default function Navbar() {
                 }
 
                 const response = await axios.get<ApiResponse<UserDetails>>(
-                    "http://localhost:3000/api/v1/getUserDetails",
+                    "https://wallet-backend-1-sqp6.onrender.com/api/v1/getUserDetails",
                     {
                         headers: {
                             Authorization: `${token}`,

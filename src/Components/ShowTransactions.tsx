@@ -16,17 +16,16 @@ const ShowTransactions = () => {
                     return;
                 }
 
-                const response: any = await axios.get("http://localhost:3000/api/v1/allTransactins", {
+                const response: any = await axios.get("https://wallet-backend-1-sqp6.onrender.com/api/v1/allTransactins", {
                     headers: {
                         Authorization: `${token}`,
                     },
                 });
 
                 if (response.data.success) {
-                    // Sort transactions by time in descending order
-                    const sortedTransactions = response.data.alltansactions.sort(
-                        (a: any, b: any) => new Date(b.time).getTime() - new Date(a.time).getTime()
-                    );
+                    const sortedTransactions = response.data.alltansactions
+                        .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
                     setTransactions(sortedTransactions);
                 } else {
                     setError(response.data.message);
@@ -41,35 +40,36 @@ const ShowTransactions = () => {
         fetchTransactions();
     }, []);
 
-    // Convert UTC time to IST
     const convertToIST = (utcTime: string) => {
-        const date = new Date(utcTime);
-        return date.toLocaleString("en-IN", {
-            timeZone: "Asia/Kolkata",
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-        });
+        try {
+            const date = new Date(utcTime);
+            return date.toLocaleString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                weekday: "short",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+            });
+        } catch {
+            return "Invalid Date";
+        }
     };
 
     return (
-        <div className="relative flex flex-col p-4 w-full max-w-auto rounded-lg mx-auto max-h-[80vh] h-[36rem]">
+        <div className="relative flex flex-col p-4 w-full max-w-auto rounded-lg mx-auto max-h-[80vh] h-[38rem]">
             <div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">
                     Transaction History
                 </h2>
             </div>
 
-            {/* Error Message */}
             {error && (
                 <div className="text-red-500 text-sm mt-2 text-center">{error}</div>
             )}
 
-            {/* Loading */}
             {loading ? (
                 <div className="text-white text-sm text-center">Loading...</div>
             ) : (
@@ -79,7 +79,7 @@ const ShowTransactions = () => {
                             No transactions found.
                         </div>
                     ) : (
-                        <ul className="space-y-4"> {/* Use an unordered list for proper semantics */}
+                        <ul className="space-y-4">
                             {transactions.map((transaction: any) => (
                                 <li
                                     key={transaction.transactionId}
@@ -98,7 +98,7 @@ const ShowTransactions = () => {
                                     </div>
                                     <div>
                                         <span className="font-semibold">Time: </span>
-                                        {convertToIST(transaction.time)}
+                                        {convertToIST(transaction.createdAt)}
                                     </div>
                                     <div>
                                         <span className={`font-semibold ${transaction.transactionType === "credit"

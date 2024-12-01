@@ -11,12 +11,12 @@ const Menu: React.FC<MenuProps> = ({ setIsMenuOpen }) => {
 
     const clickHandler = (path: string) => {
         navigate(`/${path}`);
-        setIsMenuOpen(false); // Close the menu on navigation
+        setIsMenuOpen(false);
     };
 
     const handleLogout = async () => {
         try {
-            await axios.post("http://localhost:3000/api/v1/auth/logout", null, {
+            await axios.post("https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/logout", null, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -24,7 +24,7 @@ const Menu: React.FC<MenuProps> = ({ setIsMenuOpen }) => {
 
             localStorage.removeItem("token");
             navigate("/login");
-            setIsMenuOpen(false); // Close the menu after logout
+            setIsMenuOpen(false);
         } catch (error) {
             console.error("Error during logout:", error);
             alert("An error occurred while logging out. Please try again.");

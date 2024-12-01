@@ -22,9 +22,7 @@ const Home = () => {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                // Retrieve the token from localStorage or sessionStorage
                 const token = localStorage.getItem("token");
-                console.log(token);
 
                 if (!token) {
                     setError("Unauthorized: No token provided.");
@@ -32,18 +30,15 @@ const Home = () => {
                     return;
                 }
 
-                // Send request with Authorization header
                 const response = await axios.get<ApiResponse<UserDetails>>(
-                    "http://localhost:3000/api/v1/getUserDetails",
+                    "https://wallet-backend-1-sqp6.onrender.com/api/v1/getUserDetails",
                     {
                         headers: {
-                            Authorization: `${token}`, // Add the token here
+                            Authorization: `${token}`,
                         },
-                        withCredentials: true, // If cookies are also required
+                        withCredentials: true,
                     }
                 );
-
-                console.log(response);
                 setUserDetails(response.data.data);
                 setLoading(false);
             } catch (err: any) {
@@ -65,7 +60,6 @@ const Home = () => {
 
     return (
         <div className=" h-[36rem]">
-            {/* Content Container */}
             <div className="flex flex-col items-center text-center space-y-6 overflow-y-auto mb-16">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
                     Welcome to Wezire Bank,
@@ -93,7 +87,6 @@ const Home = () => {
                 </p>
             </div>
 
-            {/* Footer - Will be pushed to the bottom */}
             <footer className="w-full py-4 text-white text-center mt-auto">
                 © {new Date().getFullYear()} Wezire Bank. All Rights Reserved.
             </footer>

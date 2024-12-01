@@ -22,10 +22,9 @@ const Login: React.FC = () => {
 
     const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError(""); // Clear previous errors
-        setLoading(true); // Start loading
+        setError("");
+        setLoading(true);
 
-        // Validate form data
         const validationResult = loginSchema.safeParse({ email, password });
         if (!validationResult.success) {
             setError(validationResult.error.errors.map(err => err.message).join(", "));
@@ -36,18 +35,15 @@ const Login: React.FC = () => {
         const user: LoginData = { email, password };
 
         try {
-            // Make API call
             const { data } = await axios.post<{ success: boolean; token?: string; message?: string }>(
-                'http://localhost:3000/api/v1/auth/login',
+                'https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/login',
                 user
             );
 
             if (data.success && data.token) {
-                // Save the token in localStorage
-                console.log(data.token);
                 localStorage.setItem('token', `${data.token}`);
                 alert("Login successful!");
-                navigate('/home'); // Navigate to the home page after successful login
+                navigate('/home');
             } else {
                 setError(data.message || "Invalid credentials");
             }
@@ -55,7 +51,7 @@ const Login: React.FC = () => {
             console.error("Error:", err);
             setError("An error occurred during login. Please try again.");
         } finally {
-            setLoading(false); // Stop loading
+            setLoading(false);
         }
     };
 
@@ -68,12 +64,10 @@ const Login: React.FC = () => {
                 zIndex: 0,
                 backgroundRepeat: "space"
             }}>
-            {/* Form container with backdrop-blur removed */}
             <form className="relative bg-black/70 flex flex-col p-6 sm:p-8 w-full max-w-md rounded-lg shadow-md"
                 onSubmit={loginHandler}>
                 <h2 className="text-2xl sm:text-3xl font-bold text-purple-500 mb-6 sm:mb-8 text-center">Login</h2>
 
-                {/* Email Input */}
                 <Input
                     icon={Mail}
                     type="email"
@@ -82,7 +76,6 @@ const Login: React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
-                {/* Password Input */}
                 <Input
                     icon={Lock}
                     type="password"
@@ -91,14 +84,12 @@ const Login: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                {/* Error Message */}
                 {error && (
                     <div className="text-red-500 text-sm mt-2 text-center">
                         {error}
                     </div>
                 )}
 
-                {/* Submit Button */}
                 <div className="w-full flex justify-center mt-4 sm:mt-6">
                     <button
                         type="submit"

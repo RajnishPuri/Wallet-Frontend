@@ -32,7 +32,7 @@ const RequestMoney = () => {
 
         try {
             const response: any = await axios.post(
-                "http://localhost:3000/api/v1/sendRequestMoney",
+                "https://wallet-backend-1-sqp6.onrender.com/api/v1/sendRequestMoney",
                 { senderAccountNumber, amount },
                 {
                     headers: {
@@ -75,7 +75,6 @@ const RequestMoney = () => {
                     />
                 </div>
 
-                {/* Amount Input */}
                 <div>
                     <label className="block text-white mb-2">Amount</label>
                     <Input
@@ -87,17 +86,14 @@ const RequestMoney = () => {
                     />
                 </div>
 
-                {/* Error Message */}
                 {error && (
                     <div className="text-red-500 text-sm text-center">{error}</div>
                 )}
 
-                {/* Success Message */}
                 {message && (
                     <div className="text-green-500 text-sm text-center">{message}</div>
                 )}
 
-                {/* Submit Button */}
                 <div className="w-full flex justify-center">
                     <button
                         type="submit"
