@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-const server = import.meta.env.VITE_SERVER;
+const server = import.meta.env.VITE_SERVER || "https://wallet-backend-1-sqp6.onrender.com";
 console.log(server);
 
 interface MenuProps {
