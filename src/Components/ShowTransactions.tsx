@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 
-const server = import.meta.env.VITE_SERVER;
+const server = import.meta.env.VITE_SERVER || "https://wallet-backend-1-sqp6.onrender.com";
 console.log(server);
 const ShowTransactions = () => {
     const [transactions, setTransactions] = useState<any[]>([]);
