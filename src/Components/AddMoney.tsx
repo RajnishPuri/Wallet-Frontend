@@ -3,6 +3,9 @@ import axios from "axios";
 import Input from "./input";
 import { CurrencyIcon } from "lucide-react";
 
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+
 const AddMoney = () => {
     const [amount, setAmount] = useState<number>(0);
     const [message, setMessage] = useState("");
@@ -31,7 +34,7 @@ const AddMoney = () => {
 
         try {
             const response: any = await axios.post(
-                "https://wallet-backend-1-sqp6.onrender.com/api/v1/addMoney",
+                `${server}/api/v1/addMoney`,
                 { amount },
                 {
                     headers: {

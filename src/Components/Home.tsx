@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+
 interface ApiResponse<T> {
     success: boolean;
     message: string;
@@ -31,7 +34,7 @@ const Home = () => {
                 }
 
                 const response = await axios.get<ApiResponse<UserDetails>>(
-                    "https://wallet-backend-1-sqp6.onrender.com/api/v1/getUserDetails",
+                    `${server}/api/v1/getUserDetails`,
                     {
                         headers: {
                             Authorization: `${token}`,

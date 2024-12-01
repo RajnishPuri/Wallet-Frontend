@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+
 const SendRequestMoney = () => {
     const [pendingRequests, setPendingRequests] = useState<any[]>([]);
     const [completedRequests, setCompletedRequests] = useState<any[]>([]);
@@ -18,7 +21,7 @@ const SendRequestMoney = () => {
                 }
 
                 const responsefirst: any = await axios.get(
-                    "https://wallet-backend-1-sqp6.onrender.com/api/v1/allRequestMoney",
+                    `${server}/api/v1/allRequestMoney`,
                     {
                         headers: {
                             Authorization: `${token}`,
@@ -58,7 +61,7 @@ const SendRequestMoney = () => {
             }
 
             const response: any = await axios.post(
-                "https://wallet-backend-1-sqp6.onrender.com/api/v1/completeRequestMoney",
+                `${server}/api/v1/completeRequestMoney`,
                 { id: requestId },
                 {
                     headers: {

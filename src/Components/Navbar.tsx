@@ -4,6 +4,9 @@ import axios from "axios";
 import { setUserDetails, setLoading, setError } from "../store/store";
 import { RootState } from "../store/store";
 
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+
 type ApiResponse<T> = {
     success: boolean;
     message: string;
@@ -33,7 +36,7 @@ export default function Navbar() {
                 }
 
                 const response = await axios.get<ApiResponse<UserDetails>>(
-                    "https://wallet-backend-1-sqp6.onrender.com/api/v1/getUserDetails",
+                    `${server}/api/v1/getUserDetails`,
                     {
                         headers: {
                             Authorization: `${token}`,

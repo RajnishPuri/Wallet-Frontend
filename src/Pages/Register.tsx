@@ -6,6 +6,10 @@ import PasswordStrengthMeter from '../Components/PasswordStrengthMeter';
 import { z } from 'zod';
 import Logo from '/Wezire-Logo.png'
 
+
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+
 interface RegisterState {
     firstName: string,
     lastName: string,
@@ -65,7 +69,7 @@ const Register = () => {
 
         const user = { firstName: state.firstName, lastName: state.lastName, email: state.email, password: state.password };
 
-        fetch('https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/register', {
+        fetch(`${server}/api/v1/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user),
@@ -94,7 +98,7 @@ const Register = () => {
 
         const verificationData = { otp: state.verificationCode };
 
-        fetch('https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/verify-user', {
+        fetch(`${server}/api/v1/auth/verify-user`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(verificationData),

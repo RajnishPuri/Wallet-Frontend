@@ -6,6 +6,10 @@ import { Lock, Mail } from "lucide-react";
 import { z } from 'zod';
 import Logo from '/Wezire-Logo.png';
 
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+console.log(server);
+
 const loginSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
@@ -36,7 +40,7 @@ const Login: React.FC = () => {
 
         try {
             const { data } = await axios.post<{ success: boolean; token?: string; message?: string }>(
-                'https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/login',
+                `${server}/api/v1/auth/login`,
                 user
             );
 

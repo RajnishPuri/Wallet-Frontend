@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
 const ShowTransactions = () => {
     const [transactions, setTransactions] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -9,14 +12,14 @@ const ShowTransactions = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const token = localStorage.getItem("token"); // Retrieve token
+                const token = localStorage.getItem("token");
                 if (!token) {
                     setError("You must be logged in to view transactions.");
                     setLoading(false);
                     return;
                 }
 
-                const response: any = await axios.get("https://wallet-backend-1-sqp6.onrender.com/api/v1/allTransactins", {
+                const response: any = await axios.get(`${server}/api/v1/allTransactins`, {
                     headers: {
                         Authorization: `${token}`,
                     },

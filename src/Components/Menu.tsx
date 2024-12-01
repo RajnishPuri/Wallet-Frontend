@@ -1,6 +1,9 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
+const server = import.meta.env.VITE_SERVER;
+console.log(server);
+
 interface MenuProps {
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -16,7 +19,7 @@ const Menu: React.FC<MenuProps> = ({ setIsMenuOpen }) => {
 
     const handleLogout = async () => {
         try {
-            await axios.post("https://wallet-backend-1-sqp6.onrender.com/api/v1/auth/logout", null, {
+            await axios.post(`${server}/api/v1/auth/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
