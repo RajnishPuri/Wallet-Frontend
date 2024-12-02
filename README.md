@@ -1,50 +1,118 @@
-# React + TypeScript + Vite
+---
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+---
+# Wezire Wallet Frontend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## Expanding the ESLint configuration
+The **Wezire Wallet Frontend** provides a sleek and responsive interface for the Wezire Wallet application. It is built with **React**, **TypeScript**, and **Vite**, enabling seamless user interactions for wallet management, transactions, and account-related features.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+* **User Interface**:
+  * Clean and responsive design.
+  * Role-based views for different user actions.
+* **Wallet Management**:
+  * Add money to the wallet.
+  * View wallet balance.
+* **Money Transactions**:
+  * Send money to other users.
+  * Request money from other users.
+  * View and manage transaction history.
+* **Authentication**:
+  * Secure login and registration with JWT token management.
+  * Email verification during registration.
+* **Error Handling**:
+  * Friendly error messages for invalid actions.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Tech Stack
+
+* **React.js**: Library for building the user interface.
+* **TypeScript**: Provides type safety and maintainable code.
+* **Vite**: Fast development server and build tool.
+* **React Router**: Handles navigation between pages.
+* **Axios**: For API requests to the backend.
+* **Tailwind CSS**: For styling the application.
+
+## Installation
+
+### Prerequisites
+
+- **Node.js** (v14 or later)
+- **MongoDB** (or MongoDB Atlas for a cloud-based solution)
+
+### Steps to Install
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository_url>
+   cd <project_directory>
+   ```
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+3. Create a .env file in the root directory and add the following:
+
+   ```bash
+   VITE_API_URL = <backend_api_url>
+   ```
+4. **Run the server:**
+
+   ```bash
+   npm run dev
+   ```
+5. **Build for production:**
+
+   ```bash
+   npm run build
+   ```
+
+## File Hierarchy
+
+Below is the structure of the project directory, including the key files and their purposes:
+
+```bash
+
+├── src
+│   ├── components
+│   │   ├── AddMoney.tsx
+│   │   ├── Home.tsx
+│   │   ├── input.tsx
+│   │   ├── Menu.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── PasswordStrengthMeter.tsx
+│   │   ├── ProtectedRoute.tsx             
+│   │   ├── RequestMoney.tsx         
+│   │   ├── SendMoney.tsx            
+│   │   ├── SendRequestMoney.tsx   
+│   │   └── ShowTransactions.tsx        
+│   ├── store
+│   │   └── store.tsx                         
+│   ├── pages
+│   │   ├── Login.tsx            
+│   │   ├── Register.tsx                
+│   ├── App.tsx                      
+│   ├── main.tsx
+│   └── index.css                     
+├── public                          
+│   └── logo.svg
+├── .gitignore                       
+├── package-lock.json                 
+├── package.json                    
+├── README.md                        
+├── tsconfig.json                    
+└── vite.config.ts                   
+
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Other Important Files
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+* **`.env`**: Contains environment-specific variables like the backend API URL.
+* **`package.json`**: Contains project metadata, dependencies, and scripts.
+* **`tsconfig.json`**: Configuration file for TypeScript to define compiler options.
+* **`vite.config.ts`**: Configuration file for Vite to optimize the build process.
+* **`README.md`**: This file contains project documentation.
