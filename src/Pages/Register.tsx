@@ -54,7 +54,7 @@ const Register = () => {
             path: ['confirmPassword'],
         });
 
-    function createHandler(e: React.FormEvent) {
+        function createHandler(e: React.FormEvent) {
         e.preventDefault();
 
         const validationResult = signupSchema.safeParse({
@@ -73,45 +73,64 @@ const Register = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user),
-            credentials: 'include',
         })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
+            .then((res) => {
+                if (!res.ok) {
+                    return res.json().then((data) => {
+                        throw new Error(data.message || 'Failed to register');
+                    });
+                }
+
+                const token = res.headers.get('Authorization');
+                if (token) {
+                    localStorage.setItem('signupToken', token);
                     setState((prevState) => ({
                         ...prevState,
-                        signupToken: data.signupToken,
+                        signupToken: token,
                         verificationStep: true,
                     }));
                 } else {
-                    alert(data.message);
+                    throw new Error('Token not received');
                 }
+                return res.json();
             })
             .catch((err) => {
                 console.error('Error:', err);
-                alert('An error occurred during signup.');
+                alert(err.message);
             });
     }
+
 
     function verifyHandler(e: React.FormEvent) {
         e.preventDefault();
 
         const verificationData = { otp: state.verificationCode };
 
+        const token = localStorage.getItem('signupToken');
+        if (!token) {
+            alert('Verification token not found. Please register again.');
+            return;
+        }
+
         fetch(`${server}/api/v1/auth/verify-user`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
             body: JSON.stringify(verificationData),
-            credentials: 'include',
         })
             .then((res) => {
                 if (!res.ok) {
-                    throw new Error('Failed to verify user.');
+                    return res.json().then((data) => {
+                        throw new Error(data.message || 'Failed to verify user.');
+                    });
                 }
                 return res.json();
             })
             .then((data) => {
                 if (data.success) {
+                    localStorage.removeItem('signupToken');
                     navigate('/login');
                 } else {
                     alert(data.message);
@@ -119,7 +138,7 @@ const Register = () => {
             })
             .catch((err) => {
                 console.error('Error:', err);
-                alert('An error occurred during verification.');
+                alert(err.message);
             });
     }
 
