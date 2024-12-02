@@ -3,7 +3,7 @@ import axios from "axios";
 import Input from "./input";
 import { CurrencyIcon } from "lucide-react";
 
-const server = import.meta.env.VITE_SERVER;
+const server = import.meta.env.VITE_SERVER || "https://wallet-backend-1-sqp6.onrender.com";
 console.log(server);
 
 const AddMoney = () => {

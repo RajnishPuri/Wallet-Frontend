@@ -6,7 +6,7 @@ import { Lock, Mail } from "lucide-react";
 import { z } from 'zod';
 import Logo from '/Wezire-Logo.png';
 
-const server = import.meta.env.VITE_SERVER;
+const server = import.meta.env.VITE_SERVER || "https://wallet-backend-1-sqp6.onrender.com";
 console.log(server);
 console.log(server);
 
